@@ -9,11 +9,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var slider: UISlider!
+    @IBOutlet private weak var slider: UISlider!
     
-    private var randomNumber: Int = 0
+    private var randomNumber = 0
     
-    @IBOutlet weak var randomNumberLabel: UILabel!
+    @IBOutlet private weak var randomNumberLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,25 +21,28 @@ class ViewController: UIViewController {
     }
     
     private func showMessage(message: String){
-        let alertController: UIAlertController = UIAlertController(title: "結果", message: message, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "結果", message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "再挑戦", style: .default, handler: nil))
         present(alertController, animated: true)
     }
     
     private func resetControllers() {
-        randomNumber = Int(arc4random_uniform(100) + 1)
+        randomNumber = Int.random(in: 1...100)
         randomNumberLabel.text = "\(randomNumber)"
         slider.value = 50
     }
 
     @IBAction func tapJudgeButton(_ sender: UIButton) {
-        let sliderValue: Int = Int(floor(slider.value))
-        print(sliderValue)
+        let sliderValue = Int(floor(slider.value))
+
+        let firstLine: String
         if randomNumber == sliderValue {
-            showMessage(message: "あたり！\nあなたの値: \(sliderValue)")
+            firstLine = "あたり！"
         } else {
-            showMessage(message: "はずれ！")
+            firstLine = "はずれ！"
         }
+        
+        showMessage(message: "\(firstLine)\nあなたの値: \(sliderValue)")
         resetControllers()
     }
 }
